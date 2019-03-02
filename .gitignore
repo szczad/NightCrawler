@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# IntellJ Idea
+.idea
+*.iml
+
+# VIM
+*.sw?
