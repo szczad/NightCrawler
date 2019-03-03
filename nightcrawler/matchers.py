@@ -23,15 +23,21 @@ class AnchorMatcher(BaseMatcher):
         log = logger.getLogger('matchers.AnchorMatcher')
         log.debug("Parsing content")
 
-        parser = BeautifulSoup(content, "html.parser")
+        parser = BeautifulSoup(content, "lxml")
         for item in parser.find_all("a"):
-            date = datetime.datetime.now()
+            if item is None:
+                continue
+
             href = item.get('href')
-            results.append(Page(_url=href, _modified=date))
+            if href.startswith("#") or not href.startswith(('http://', 'https://')):
+                continue
+
+            date = datetime.datetime.now()
+            results.append(Page(_url=href, _last_modified=date))
 
             log.debug('Found url: {url}'.format(url=href))
 
-        return results
+        return set(results)
 
 
 if __name__ == "__main__":
@@ -60,12 +66,12 @@ if __name__ == "__main__":
     assert len(results) == 2
 
     assert results[0].type == "a"
-    assert results[0].name == "Google search engine"
-    assert results[0].value == "https://www.google.com/"
+    assert results[0].url == "Google search engine"
+    assert results[0].last_modified == "https://www.google.com/"
 
     assert results[1].type == "a"
-    assert results[1].name == "Onet portal"
-    assert results[1].value == "https://www.onet.pl/"
+    assert results[1].url == "Onet portal"
+    assert results[1].last_modified == "https://www.onet.pl/"
 
     _log.info("Test passed!")
 

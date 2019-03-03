@@ -31,7 +31,8 @@ setup(
     packages=['nightcrawler'],
     install_requires=[
         'beautifulsoup4',
-        'requests'
+        'requests',
+        'lxml'
     ],
     entry_points={
         'console_scripts': [
