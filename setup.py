@@ -5,6 +5,7 @@
 # Date: 02.03.2019 17:34
 
 from setuptools import setup
+import nightcrawler
 
 
 def readme():
@@ -14,7 +15,7 @@ def readme():
 
 setup(
     name='NightCrawler',
-    version='0.1dev1',
+    version=nightcrawler.version,
     description='Website crawling bot',
     long_description=readme(),
     classifiers=[
@@ -30,11 +31,12 @@ setup(
     packages=['nightcrawler'],
     install_requires=[
         'beautifulsoup4',
-        'request'
+        'requests'
     ],
     entry_points={
         'console_scripts': [
             'nightcrawler = nightcrawler.crawler:main'
         ]
-    }
+    },
+    zip_safe=True
 )
