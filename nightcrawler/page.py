@@ -6,9 +6,9 @@
 
 
 class Page(object):
-    def __init__(self, _url, _last_modified=None):
-        self._url = _url
-        self._last_modified = _last_modified
+    def __init__(self, url, last_modified=None):
+        self._url = url
+        self._last_modified = last_modified
 
     @property
     def url(self):
@@ -19,8 +19,7 @@ class Page(object):
         return self._last_modified
 
     def __hash__(self):
-        return hash((self._url, self._last_modified))
+        return hash(self._url)
 
     def __eq__(self, other):
-        return self._url == other.url \
-               and self._last_modified == other.last_modified
+        return self._url == other.url

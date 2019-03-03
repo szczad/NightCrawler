@@ -8,7 +8,7 @@ import requests
 
 from nightcrawler import user_agent, logger
 from nightcrawler.matchers import AnchorMatcher
-from nightcrawler.results import Page
+from nightcrawler.page import Page
 
 matcher = AnchorMatcher()
 
