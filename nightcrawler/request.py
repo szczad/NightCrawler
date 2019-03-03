@@ -9,6 +9,7 @@ import requests
 from nightcrawler import user_agent, logger
 from nightcrawler.matchers import AnchorMatcher
 from nightcrawler.page import Page
+from nightcrawler.utils import UniqueElasticList
 
 matcher = AnchorMatcher()
 
@@ -17,22 +18,22 @@ class PageCrawler(object):
     log = logger.getLogger('request.PageCrawler')
 
     def __init__(self, url):
-        self.__queue = []
-        self.__visited_urls = []
-        self.__url = Page(url)
+        self.__queue = UniqueElasticList()
+        self.__visited_urls = UniqueElasticList()
+        self.__queue.append(Page(url))
 
     def process(self):
-        self.__process(self.__url)
+        for url in self.__queue:
+            self.__process(url)
         return self.__visited_urls[:]
 
     def __process(self, page):
         req = Request(self.normalize_url(page.url))
         for result in req.get_links():
-            if result in self.__visited_urls or result in self.__queue:
+            if result in self.__visited_urls:
                 continue
 
             self.__queue.append(result)
-
         self.__visited_urls.append(page)
 
     def normalize_url(self, url):
