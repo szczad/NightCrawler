@@ -3,6 +3,7 @@
 
 # Author: Grzegorz Szczudlik
 # Date: 03.03.19 14:38
+from urllib.parse import urlencode
 
 from nightcrawler import logger
 
@@ -33,7 +34,7 @@ class SitemapGenerator(object):
         url = soup.new_tag("url")
 
         loc = soup.new_tag("loc")
-        loc.string = item.url
+        loc.string = urlencode(item.url)
         url.append(loc)
 
         return url
