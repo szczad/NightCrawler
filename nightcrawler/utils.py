@@ -139,7 +139,7 @@ class URL(object):
 
     @property
     def path(self):
-        return self.__match.group('path') or None
+        return self.__match.group('path') or "/"
 
     @property
     def arguments(self):
