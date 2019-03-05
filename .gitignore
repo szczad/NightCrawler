@@ -102,3 +102,13 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# IntellJ Idea
+.idea
+*.iml
+
+# VIM
+*.sw?
+
+# XML files - sitemap
+*.xml
