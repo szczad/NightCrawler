@@ -9,7 +9,7 @@ import requests
 from nightcrawler import user_agent, logger
 from nightcrawler.matchers import AnchorMatcher
 from nightcrawler.page import Page
-from nightcrawler.utils import UniqueElasticList
+from nightcrawler.utils import UniqueElasticList, URL
 
 matcher = AnchorMatcher()
 
@@ -18,26 +18,26 @@ class PageCrawler(object):
     log = logger.getLogger('request.PageCrawler')
 
     def __init__(self, url):
-        self.__queue = UniqueElasticList()
+        self.__domain = url.domain
+        self.__queue = UniqueElasticList(url)
         self.__visited_urls = UniqueElasticList()
-        self.__queue.append(Page(url))
 
     def process(self):
         for url in self.__queue:
             self.__process(url)
         return self.__visited_urls[:]
 
-    def __process(self, page):
-        req = Request(self.normalize_url(page.url))
+    def __process(self, url):
+        if url.domain != self.__domain:
+            return
+
+        req = Request(Page(url.server_url))
         for result in req.get_links():
             if result in self.__visited_urls:
                 continue
 
             self.__queue.append(result)
-        self.__visited_urls.append(page)
-
-    def normalize_url(self, url):
-        return url.split('#')[0]
+        self.__visited_urls.append(url)
 
 
 class Request(object):
@@ -51,5 +51,5 @@ class Request(object):
 
     def get_links(self):
         self.log.debug("Making request to: %s" % self.__url)
-        content = requests.get(self.__url, headers=self.headers)
+        content = requests.get(self.__url.url, headers=self.headers)
         return matcher.parse(content.text) if content.status_code == 200 else []

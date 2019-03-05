@@ -6,20 +6,18 @@
 
 
 class Page(object):
-    def __init__(self, url, last_modified=None):
+    def __init__(self, url):
         self._url = url
-        self._last_modified = last_modified
 
     @property
     def url(self):
         return self._url
 
-    @property
-    def last_modified(self):
-        return self._last_modified
+    def __str__(self):
+        return self._url
 
     def __hash__(self):
         return hash(self._url)
 
     def __eq__(self, other):
-        return self._url == other.url
+        return self._url.server_url == other.server_url

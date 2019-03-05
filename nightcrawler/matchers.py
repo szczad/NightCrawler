@@ -9,15 +9,14 @@ import datetime
 from bs4 import BeautifulSoup
 
 from nightcrawler import logger
-from nightcrawler.page import Page
-from nightcrawler.utils import UniqueElasticList
+from nightcrawler.utils import UniqueElasticList, URL, InvalidURL
 
 
 class AnchorMatcher(object):
     def __init__(self, list_class=UniqueElasticList):
         self.__list_cls = list_class
 
-    def parse(self, content):
+    def parse(self, content, match_domains=[]):
         results = self.__list_cls()
 
         log = logger.getLogger('matchers.AnchorMatcher')
@@ -28,12 +27,21 @@ class AnchorMatcher(object):
             if item is None:
                 continue
 
-            href = item.get('href')
-            if href.startswith("#") or not href.startswith(('http://', 'https://')):
+            try:
+                href = URL(item.get('href'))
+            except InvalidURL:
                 continue
 
-            results.append(Page(url=href, last_modified=datetime.datetime.now()))
+            # Abandon non-HTTP anchors
+            if href.scheme not in ('http', 'https'):
+                continue
 
+            if match_domains:
+                # Stick to specified domains only.
+                if href.domain not in match_domains:
+                    continue
+
+            results.append(href)
             log.debug('Found url: {url}'.format(url=href))
 
         return results

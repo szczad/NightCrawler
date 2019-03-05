@@ -36,9 +36,4 @@ class SitemapGenerator(object):
         loc.string = item.url
         url.append(loc)
 
-        if item.last_modified:
-            last = soup.new_tag("lastmod")
-            last.string = item.last_modified.isoformat(timespec='seconds')
-            url.append(last)
-
         return url

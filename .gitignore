@@ -109,3 +109,6 @@ venv.bak/
 
 # VIM
 *.sw?
+
+# XML files - sitemap
+*.xml

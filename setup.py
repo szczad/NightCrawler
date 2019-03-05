@@ -32,7 +32,8 @@ setup(
     install_requires=[
         'beautifulsoup4',
         'requests',
-        'lxml'
+        'lxml',
+        'validators'
     ],
     tests_require=[
         'nose'
