@@ -4,8 +4,6 @@
 # Author: Grzegorz Szczudlik
 # Date: 02.03.19 20:57
 
-import datetime
-
 from bs4 import BeautifulSoup
 
 from nightcrawler import logger
