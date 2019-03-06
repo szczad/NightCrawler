@@ -51,7 +51,7 @@ Run the following command in shell:
 .. code-block:: bash
 
   virtualenv .env
-  . /.env/bin/activate
+  . .env/bin/activate
   pip install NightCrawler
 
 2c. Installation from source (development)
