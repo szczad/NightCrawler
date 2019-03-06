@@ -61,7 +61,7 @@ To install the package from source one have to create virtualenv after cloning t
 
 .. code-block:: bash
 
-  git clone git@github.com:szczad/NightCrawler.git
+  git clone https://github.com/szczad/NightCrawler.git
   cd NightCrawler
   virtualenv .env
   . .env/bin/activate

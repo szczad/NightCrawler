@@ -6,7 +6,7 @@
 
 import logging as logger
 
-version = "0.1.dev1"
+version = "0.1.2"
 user_agent = "NightCrawler/%s" % version
 
 logger.basicConfig(level=logger.WARN,
