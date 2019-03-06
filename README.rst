@@ -21,6 +21,8 @@ Possible enhancements
 
 * Use multi-threading with thread pools
 * Use generators to lower memory footprint and gain a bit more speed
+* Make preliminary HEAD request to distinguish between text and binary files
+* Check Content-Type and exclude files that are not HTMLs
 * Add matchers and sitemap generators for additional sitemap flavour (images, videos, etc.)
 * More tests (already included tests are only for the most critical classes)
 
