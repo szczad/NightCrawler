@@ -28,7 +28,7 @@ class SitemapGenerator(object):
         self.log.debug("Sitemap generated")
 
     def __generate_entry(self, soup, item):
-        self.log.debug("Generatig entry for %s" % item.geturl())
+        self.log.debug("Generating entry for %s" % item.geturl())
         url = soup.new_tag("url")
 
         loc = soup.new_tag("loc")
