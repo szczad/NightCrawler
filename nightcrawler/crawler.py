@@ -7,23 +7,27 @@
 import argparse
 import sys
 
+if sys.version_info < (3, ):
+    from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
+
+
 from validators import domain, url
 
 from nightcrawler import logger
 from nightcrawler.request import PageCrawler
 from nightcrawler.sitemap import SitemapGenerator
-from nightcrawler.utils import URL
 
 
 def target_validator(target):
     if domain(target):
         # http:// should be starting point as secure pages will in fact redirect to https:// eventually
-        return URL("http://%s/" % target)
+        return urlparse("http://%s/" % target)
     elif url(target):
         # Take into account only valid web protocols
         if target.startswith(("http://", "https://")):
-            # Throw away any fragment part of url - this should be processed by client browser instead
-            return URL(target)
+            return urlparse(target)
 
     raise argparse.ArgumentTypeError("Invalid URL or domain provided: %s" % target)
 

@@ -3,11 +3,9 @@
 
 # Author: Grzegorz Szczudlik
 # Date: 03.03.19 14:38
-from urllib.parse import urlencode
-
-from nightcrawler import logger
 
 from bs4 import BeautifulSoup
+from nightcrawler import logger
 
 
 class SitemapGenerator(object):
@@ -30,11 +28,11 @@ class SitemapGenerator(object):
         self.log.debug("Sitemap generated")
 
     def __generate_entry(self, soup, item):
-        self.log.debug("Generatig entry for %s" % item.url)
+        self.log.debug("Generating entry for %s" % item.geturl())
         url = soup.new_tag("url")
 
         loc = soup.new_tag("loc")
-        loc.string = urlencode(item.url)
+        loc.string = item.geturl()
         url.append(loc)
 
         return url
