@@ -16,10 +16,11 @@ matcher = AnchorMatcher()
 class PageCrawler(object):
     log = logger.getLogger('request.PageCrawler')
 
-    def __init__(self, url):
+    def __init__(self, url, include_external=False):
         self.__domain = url.netloc
         self.__queue = UniqueElasticList(url)
         self.__visited_urls = UniqueElasticList()
+        self.__include_external = include_external
 
     def process(self):
         for url in self.__queue:
@@ -31,12 +32,16 @@ class PageCrawler(object):
             return
 
         req = Request(url)
-        for result in req.get_links():
-            if result in self.__visited_urls:
+        internal, external = req.get_links()
+        for link in internal:
+            if link in self.__visited_urls:
                 continue
 
-            self.__queue.append(result)
+            self.__queue.append(link)
         self.__visited_urls.append(url)
+
+        if self.__include_external:
+            self.__visited_urls.extend(external)
 
 
 class Request(object):
@@ -51,4 +56,4 @@ class Request(object):
     def get_links(self):
         self.log.debug("Making request to: %s" % self.__url.geturl())
         content = requests.get(self.__url.geturl(), headers=self.headers)
-        return matcher.parse(content.text, self.__url) if content.status_code == 200 else []
+        return matcher.parse(content.text, self.__url) if content.status_code == 200 else ([], [])

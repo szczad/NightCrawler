@@ -20,6 +20,12 @@ class ElasticListTest(unittest.TestCase):
     def test_add_elements(self):
         self.assertEqual(self.elastic_list.values(), ['F', 'E', 'X', 'E'])
 
+    def test_add_collection(self):
+        self.elastic_list = ElasticList()
+        self.elastic_list.extend(['F', 'E', 'X', 'E'])
+
+        self.assertEqual(self.elastic_list.values(), ['F', 'E', 'X', 'E'])
+
     def test_remove_elements(self):
         self.assertEqual(self.elastic_list.pop(), 'F')
         self.assertEqual(self.elastic_list.values(), ['E', 'X', 'E'])
@@ -60,4 +66,10 @@ class UniqueElasticQueueTest(unittest.TestCase):
         self.elastic_list.push('E')
 
     def test_add_elements(self):
+        self.assertEqual(self.elastic_list.values(), ['F', 'E', 'X'])
+
+    def test_add_collection(self):
+        self.elastic_list = UniqueElasticList()
+        self.elastic_list.extend(['F', 'E', 'X', 'E'])
+
         self.assertEqual(self.elastic_list.values(), ['F', 'E', 'X'])

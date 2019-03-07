@@ -22,7 +22,8 @@ class AnchorMatcher(object):
         self.__list_cls = list_class
 
     def parse(self, content, url):
-        results = self.__list_cls()
+        internal_links = self.__list_cls()
+        external_links = self.__list_cls()
 
         log = logger.getLogger('matchers.AnchorMatcher')
         log.debug("Parsing content")
@@ -37,19 +38,23 @@ class AnchorMatcher(object):
             except InvalidURL:
                 continue
 
-            if href.scheme not in ('', 'http', 'https') or (href.netloc and href.netloc != url.netloc):
+            if href.scheme not in ('', 'http', 'https'):
                 continue
 
-            href = ParseResult(
-                scheme=href.scheme if href.scheme else url.scheme,
-                netloc=href.netloc if href.netloc else url.netloc,
-                path=href.path if href.path else "/",
-                params=href.params,
-                query=href.query,
-                fragment=''
-            )
+            if href.netloc and href.netloc != url.netloc:
+                external_links.append(href)
+            else:
+                href = ParseResult(
+                    scheme=href.scheme if href.scheme else url.scheme,
+                    netloc=href.netloc if href.netloc else url.netloc,
+                    path=href.path if href.path else "/",
+                    params=href.params,
+                    query=href.query,
+                    fragment=''
+                )
 
-            results.append(href)
+                internal_links.append(href)
+
             log.debug('Found url: {url}'.format(url=href.geturl()))
 
-        return results
+        return internal_links, external_links

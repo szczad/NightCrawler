@@ -22,6 +22,12 @@ class ElasticList(object):
         self._queue.extend(args)
         self._iter = None
 
+    def __str__(self):
+        return str(self._queue)
+
+    def __repr__(self):
+        return repr(self._queue)
+
     def push(self, item):
         self._queue.append(item)
     append = push
@@ -30,6 +36,9 @@ class ElasticList(object):
         if self._iter is not None:
             self._iter -= 1
         return self._queue.pop(0)
+
+    def extend(self, collection):
+        self._queue.extend(collection)
 
     def values(self):
         return self._queue[:]
@@ -65,6 +74,10 @@ class UniqueElasticList(ElasticList):
         if item not in self._queue:
             self._queue.append(item)
     append = push
+
+    def extend(self, collection):
+        for item in collection:
+            self.push(item)
 
 
 class InsensitiveString(str):
