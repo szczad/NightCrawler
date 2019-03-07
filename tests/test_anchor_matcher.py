@@ -38,9 +38,12 @@ class AnchorMatcherTest(unittest.TestCase):
         url = urlparse('http://www.google.com/')
 
         matcher = AnchorMatcher(list_class=list)
-        results = matcher.parse(test_html, url)
+        internal, external = matcher.parse(test_html, url)
 
-        self.assertEqual(len(results), 2)
+        self.assertEqual(len(internal), 2)
+        self.assertEqual(len(external), 1)
 
-        self.assertEqual(results[0].geturl(),  "https://www.google.com/")
-        self.assertEqual(results[1].geturl(),  "https://www.google.com/")
+        self.assertEqual(internal[0].geturl(),  "https://www.google.com/")
+        self.assertEqual(internal[1].geturl(),  "https://www.google.com/")
+
+        self.assertEqual(external[0].geturl(),  "https://www.onet.pl/")
